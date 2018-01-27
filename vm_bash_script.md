@@ -2,9 +2,9 @@
 
 1. Go to the VM you want to open, right-click, and "create desktop shortcut".
 ![](/bs/bs_01.png)
+![](/bs/bs_02.png)
 
 2. Go to the shortcut, right-click, and select "properties".
-![](/bs/bs_02.png)
 ![](/bs/bs_03.png)
 
 3. Copy the "command" to your clipboard, feel free to delete the shortcut.
