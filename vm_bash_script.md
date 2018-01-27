@@ -1,7 +1,7 @@
 # Opening a specific VirtualBox VM through terminal.
 
 1. Go to the VM you want to open, right-click, and "create desktop shortcut".
-![](/self_study/bs/bs_01.png)
+![](/bs/bs_01.png)
 
 2. Go to the shortcut, right-click, and select "properties".
 ![](self_study/bs/bs_02.png)
