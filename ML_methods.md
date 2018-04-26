@@ -5,13 +5,13 @@
 #### What assumptions does it make about the data?
 
 #### What is it optimizing for?
-A decision tree minimizes entropy in the data that it is splitting, which in turn maximizes information gain. The implementation of this model in sci-kit learn can also optimize for "gini" which is functionaly equivalent. 
+A decision tree minimizes entropy in the data that it is splitting, which in turn maximizes information gain. The implementation of this model in sci-kit learn can also optimize for "gini" which is functionally equivalent. 
 
 #### What parameters does it have?
-- splitter: "best" or "random"
-- max\_depth: integer or None (splits until all leaves are pure or at the min\_samples\_split)
-- min\_samples\_split: minimum number of samples required to split an internal node
-- max\_features: number of features considered for each split (defaults to the square root of the number of features)
+- **splitter**: "best" or "random"
+- **max\_depth**: integer or None (splits until all leaves are pure or at the min\_samples\_split)
+- **min\_samples\_split**: minimum number of samples required to split an internal node
+- **max\_features**: number of features considered for each split (defaults to the square root of the number of features)
 
 #### How are those parameters selected?
 
@@ -20,38 +20,50 @@ A decision tree minimizes entropy in the data that it is splitting, which in tur
 #### How do you interpret the model and its predictions?
 
 #### Implementation Reference
-- Low Complexity 
+- Low Complexity
 - Likely to Overfit
-- High Interpretability 
-- Training Time depends on the depth of the tree and number of features. 
-- **Testing/Scoring Time?** Slow, Medium, Fast
+- High Interpretability
+- Training Time depends on the depth of the tree and number of features.
+- Testing/Scoring Time also depends, but faster than training. 
 
 ## Logistic Regression
 
 #### What assumptions does it make about the data?
+Logistic Regression assumes there are not many outliers in the data.
 
 #### What is it optimizing for?
+Logistic maximimizes the *log probability* of a positive sample, while minimizes one of two loss functions:
+- L1: sum of absolute differences between the true value and the predicted value
+- L2: sum of squared differences between the true value and the predicted value
 
 #### What parameters does it have?
-
+- **penalty**: Choose between "L1" and "L2" loss functions.
+- **fit\_intercept**: Specifies if a constant (a.k.a. bias or intercept) should be added to the decision function.
+- **class\_weight**: Weights associated with classes in the form `{class_label: weight}`.
+ 
 #### How are those parameters selected?
+Fitting the intercept, weighting features, and the loss function used all depend on the task at hand.
 
-#### How you score new data with it?
+#### How you score new data and interpret the model's predictions?
+The logistic regression function outputs the predicted probability of a data point being a positive sample. Data with probabilites over the designated threshold are classified as positive, while data with probabilites under the threshold are classified as negative. The threshold is largely influenced by domain knowledge, and is almost never 50%.  
 
-#### How do you interpret the model and its predictions?
-
-- Complexity? Low, Medium, High
-- Likely to Overfit? Yes, No
-- Interpretability? Low, Medium, High
-- Training Time? Slow, Medium, Fast
-- Testing/Scoring Time? Slow, Medium, Fast
+#### Implementation Reference
+- Medium Complexity 
+- Likely to Overfit
+- High Interpretability
+- Fast Training Time
+- Fast Testing/Scoring Time
 
 ## Support Vector Machines
 
 #### What assumptions does it make about the data?
+SVMs can handle data with outliers, as the model is trained on only the "support" vectors.
 
 #### What is it optimizing for?
-
+SVMs optimize on two components:
+1. Maximizing the *margin*, the distance between data points closest to the central decision boundary.
+2. Minimizing the number of misclassified data points (regularization) 
+ 
 #### What parameters does it have?
 
 #### How are those parameters selected?
@@ -60,8 +72,9 @@ A decision tree minimizes entropy in the data that it is splitting, which in tur
 
 #### How do you interpret the model and its predictions?
 
-- Complexity? Low, Medium, High
-- Likely to Overfit? Yes, No
-- Interpretability? Low, Medium, High
+#### Implementation Reference
+- High Complexity (Depending on the space, particularly high dimensions)
+- Less Likely to Overfit
+- Low Interpretability
 - Training Time? Slow, Medium, Fast
 - Testing/Scoring Time? Slow, Medium, Fast
