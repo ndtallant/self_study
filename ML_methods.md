@@ -30,10 +30,10 @@ Each node of the tree is a logical rule applying to the data point, and a leaf n
 ## Logistic Regression
 
 #### What assumptions does it make about the data?
-Logistic Regression assumes there are not many outliers in the data.
+Logistic Regression assumes there are not many outliers in the data and that the features are linear.
 
 #### What is it optimizing for?
-Logistic maximimizes the *log probability* of a positive sample, while minimizes one of two loss functions:
+Logistic maximimizes the *log probability* of a positive sample, and minimizes one of two loss functions:
 - L1: sum of absolute differences between the true value and the predicted value
 - L2: sum of squared differences between the true value and the predicted value
 
@@ -80,5 +80,5 @@ Classification is rather simple. There is a decision boundary in the vector spac
 - High Complexity (Depending on the space, particularly high dimensions)
 - Less Likely to Overfit
 - Low Interpretability
-- Training Time? Slow, Medium, Fast (depend on data?)
-- Testing/Scoring Time? Slow, Medium, Fast (depends on data?)
+- Slow Training Time
+- Slow Testing/Scoring Time
