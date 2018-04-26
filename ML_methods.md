@@ -17,7 +17,7 @@ A decision tree minimizes entropy in the data that it is splitting, which in tur
 #### How are those parameters selected?
 These parameters are largely influenced by the size of the data. For example a max depth of 8 for a model with 10 features will overfit.
 
-#### How you score new data and interpret the model's predictions?
+#### How do you score new data and interpret the model's predictions?
 Each node of the tree is a logical rule applying to the data point, and a leaf node is the conjunction of the rules of its parents. A data point that meets each logical decision will end up in a leaf node to classify it. The model can also be adjusted for the nodes to show a predicted probability for a positive classification.
 
 #### Implementation Reference
@@ -45,7 +45,7 @@ Logistic maximimizes the *log probability* of a positive sample, while minimizes
 #### How are those parameters selected?
 Fitting the intercept, weighting features, and the loss function used all depend on the task at hand.
 
-#### How you score new data and interpret the model's predictions?
+#### How do you score new data and interpret the model's predictions?
 The logistic regression function outputs the predicted probability of a data point being a positive sample. Data with probabilites over the designated threshold are classified as positive, while data with probabilites under the threshold are classified as negative. The threshold is largely influenced by domain knowledge, and is almost never 50%.  
 
 #### Implementation Reference
@@ -58,24 +58,27 @@ The logistic regression function outputs the predicted probability of a data poi
 ## Support Vector Machines
 
 #### What assumptions does it make about the data?
-SVMs can handle data with outliers, as the model is trained on only the "support" vectors.
+SVMs can handle data with outliers, as the model is trained on only the "support" vectors. The features need to be appropriately scaled.
 
 #### What is it optimizing for?
 SVMs optimize on two components:
 1. Maximizing the *margin*, the distance between data points closest to the central decision boundary.
-2. Minimizing the number of misclassified data points (regularization) 
+2. Minimizing the number of misclassified data points (regularization / hinge loss) 
  
 #### What parameters does it have?
+- **penalty**: "l1" or "l2"
+- **loss**: default is "hinge"
+- **class\_weight**: Weights associated with classes in the form `{class_label: weight}`.
 
 #### How are those parameters selected?
+The default parameters of sklearn will be used most of the time. Beyond that we want as much information as possible.
 
-#### How you score new data with it?
-
-#### How do you interpret the model and its predictions?
+#### How do you score new data and interpret the model's predictions?
+Classification is rather simple. There is a decision boundary in the vector space separating predicted positives and negatives. Samples below the boundary are positive and samples above are negative. This classification is done with the boundary set at zero. Note the magnitude of the classification prediction is not insightful - for example a sample with -1 is no more likely to be positive than a sample with -0.5. 
 
 #### Implementation Reference
 - High Complexity (Depending on the space, particularly high dimensions)
 - Less Likely to Overfit
 - Low Interpretability
-- Training Time? Slow, Medium, Fast
-- Testing/Scoring Time? Slow, Medium, Fast
+- Training Time? Slow, Medium, Fast (depend on data?)
+- Testing/Scoring Time? Slow, Medium, Fast (depends on data?)
