@@ -3,6 +3,7 @@
 ## Decision Trees
 
 #### What assumptions does it make about the data?
+Decision Trees are used with the assumption that the data is balanced. A training dataset consisting of mostly one class will result in a classifier that is biased towards that majority class.
 
 #### What is it optimizing for?
 A decision tree minimizes entropy in the data that it is splitting, which in turn maximizes information gain. The implementation of this model in sci-kit learn can also optimize for "gini" which is functionally equivalent. 
@@ -14,10 +15,10 @@ A decision tree minimizes entropy in the data that it is splitting, which in tur
 - **max\_features**: number of features considered for each split (defaults to the square root of the number of features)
 
 #### How are those parameters selected?
+These parameters are largely influenced by the size of the data. For example a max depth of 8 for a model with 10 features will overfit.
 
-#### How you score new data with it?
-
-#### How do you interpret the model and its predictions?
+#### How you score new data and interpret the model's predictions?
+Each node of the tree is a logical rule applying to the data point, and a leaf node is the conjunction of the rules of its parents. A data point that meets each logical decision will end up in a leaf node to classify it. The model can also be adjusted for the nodes to show a predicted probability for a positive classification.
 
 #### Implementation Reference
 - Low Complexity
