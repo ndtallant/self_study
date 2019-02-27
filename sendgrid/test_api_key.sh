@@ -1,6 +1,4 @@
-for var in `cat .env`; do
-    export ${var}
-done
+source .env
 
 # Look for a 202 response code!
 curl -i --request POST \
