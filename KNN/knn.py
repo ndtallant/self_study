@@ -1,19 +1,27 @@
 import numpy as np
-from scipy.spatial.distance import cdist 
+from scipy.spatial.distance import cdist
 
 
 class KNearestNick:
     '''Currently only predicts one point at a time.'''
-    
+
     def __init__(self, k, distance='euclidean'):
         self.k = k
         self.distance = distance
 
-    # TODO: Set properties
+    @property
+    def k(self):
+        return self._k
+
+    @k.setter
+    def k(self, k):
+        if not isinstance(k, int):
+            raise ValueError("k must be an integer.")
+        self._k = k
 
     def fit(self, X, y):
         '''Stores a reference to training data, will add ndarray verification
-        later.''' 
+        later.'''
         self.X_train = X
         self.y_train = y
 
@@ -27,7 +35,7 @@ class KNearestNick:
         '''Chooses class with highest probability'''
         classes, probabilities = self.predict_proba(X)
         return classes[np.argsort(probabilities)[-1]]
-    
+
     def get_neighbors(self, X):
         '''Returns k nearest neighbors of given X'''
         array_index = np.argsort(self._get_distance(X))[0, 0:self.k]
