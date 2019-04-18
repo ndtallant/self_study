@@ -1,7 +1,6 @@
 import numpy as np
 from scipy.spatial.distance import cdist
 
-
 class KNearestNick:
     '''Currently only predicts one point at a time.'''
 
