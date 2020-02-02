@@ -1,4 +1,5 @@
 library(tidyverse)
+library(tidytallant)
 library(rstanarm)
 
 # Join the two datasets so the variables are the same as the book.
@@ -41,10 +42,9 @@ p.pool <- stan_glmer(y ~ x + (1 | county), data = df)
 p.pool.est <- as_tibble(p.pool) %>%
   select(contains("b["))
 
-m.est <- as_tibble(t(map_df(p.pool.est, mean)), name_repair = "min")
-sd.est <- as_tibble(t(map_df(p.pool.est, sd)), name_repair = "min")
+m.est <- tt(map_df(p.pool.est, mean), new.names = c("estimate"))
+sd.est <- tt(map_df(p.pool.est, sd), new.names = c("std.error"))
 bind_cols(c(m.est, sd.est)) %>%
-  select(estimate = V1, std.error = V11) %>%
   arrange(estimate) %>%
   mutate(x = row_number()) %>%
     ggplot(aes(x, estimate)) +
