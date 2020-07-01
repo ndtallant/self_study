@@ -1,3 +1,6 @@
+library(sf)
+library(tidyverse)
+
 r = sqrt(2)/10
 b1 = st_buffer(st_point(c(.1,.1)), r)
 b2 = st_buffer(st_point(c(.9,.9)), r)
@@ -22,7 +25,7 @@ nearest.index <- try(st_nearest_feature(pts$geometry, circles$geometry))
 # Returns a linestring connecting the nearest points between geometries
 # Note the second geometry is indexed such that you get the nearest point of
 # the nearest geometry.
-ls <- st_nearest_points(pts$geometry, circles$geometry[nearest], pairwise = TRUE)
+ls <- st_nearest_points(pts$geometry, circles$geometry[nearest.index], pairwise = TRUE)
 plot(ls, col = 5:8, add = TRUE)
 
 pts$nearest.circle <- circles$circle.id[nearest.index]
