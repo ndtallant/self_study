@@ -1,0 +1,152 @@
+<html>
+  <head>
+    <meta charset="UTF-8">
+
+    <title>Adding SVG</title>
+
+    <style type="text/css">
+      body {
+        background-color: #ccc;
+        width: 100%;
+      }
+
+      #chart {
+        background-color: #ccc;
+        width: 1000px;
+        height: 500px;
+        margin: 50px auto;
+        border: solid 1px #000;
+      }
+
+      svg {
+        background-color: #fff;
+      }
+
+      .dot {
+        stroke: #000;
+        stroke-width: 1px;
+      }
+
+      .axis line, .axis path {
+        stroke: #bbb;
+      }
+
+      .axis text {
+        fill: #bbb;
+      }
+
+      #tooltip {
+        position: absolute;
+        background-color: #fff;
+        padding: 20px;
+        border: solid 1px #000;
+        opacity: 0;
+      }
+
+      .axisLabel {
+        fill: #bbb;
+        font: sans-serif;
+        font-size 10px;
+      }
+
+
+    </style>
+    <script src="d3.min.js"></script>
+
+  </head>
+  <body>
+  
+      <div id="chart"></div>
+      <div id="tooltip"></div>
+
+
+
+      <!-- Putting script after the div we want it in -->
+      <script type="text/javascript">
+
+        var width = 1000, height = 500, margin = 30;
+        var rValues = [2, 15];
+        var circles, xScale, yScale;
+
+        var svg = d3.select("#chart")
+          .append("svg")
+          .attr("width", width + "px")
+          .attr("height", height + "px");
+
+        // then is cool async stuff
+        d3.csv("boston-housing.csv").then(function(data) {
+          //console.log(data);
+
+          // Sort data so charles == 0 is first
+          // Sorting in JavaScript seems weird...
+          data = data.sort(function(a, b) { return a.charles - b.charles; });
+
+          xMinMax = d3.extent(data, function(d) { return parseFloat(d.poor); });
+          yMinMax = d3.extent(data, function(d) { return parseFloat(d.rooms); });
+          rMinMax = d3.extent(data, function(d) { return parseFloat(d.value); });
+
+          // Domain is input, range is output. We map the inputs to an output. Also fix upside down y-axis in DOM.
+          xScale = d3.scaleLinear().domain([xMinMax[0], xMinMax[1]]).range([margin + rValues[1], width - margin - rValues[1]]);
+          yScale = d3.scaleLinear().domain([yMinMax[1], yMinMax[0]]).range([margin + rValues[1], height - margin - rValues[1]]);
+          rScale = d3.scaleLinear().domain([rMinMax[0], rMinMax[1]]).range([rValues[0], rValues[1]]);
+
+          cScale = d3.scaleOrdinal().domain([0,1]).range(["#333", "#FF6600"]);
+
+          // Use the svg object, and select all the things of class dot
+          circles = svg.selectAll(".dot")
+            .data(data) // Use our data
+            .enter()    // For everything being added, do...
+            .append("circle")
+            .attr("class", "dot") // To use later.
+            .attr("cx", function(d) { return xScale(d.poor); })
+            .attr("cy", function(d) { return yScale(d.rooms); })
+            .attr("r", 0)
+            .attr("fill", function(d) { return cScale(d.charles); })
+            .style("opacity", function(d) { return d.charles == 1 ? 1 : 0.3; })
+            .on("mouseover", function(d) {
+              info = "Percent in Poverty: " + parseFloat(d.poor).toFixed(2) + "% <br />";
+              info += "Number of Rooms: " + parseInt(d.rooms) + "<br />";
+              info += "Home Value: $" + parseFloat(d.value).toFixed(2)*1000 + "<br />";
+              info += "Near the Charles: " +  (d.charles == 1 ? "Yes" : "No");
+              d3.select("#tooltip")
+                .html(info)
+                .style("left", d3.event.pageX - 50)
+                .style("top", d3.event.pageY - 150)
+                .style("opacity", 0.85);
+            })
+            .on("mouseout", function() { d3.select("#tooltip").style("opacity", 0) });
+
+          // Axes
+          xAxis = d3.axisBottom(xScale).tickValues([xMinMax[0], xMinMax[1]]);
+          yAxis = d3.axisLeft(yScale).tickValues([yMinMax[0], yMinMax[1]]);
+
+          // SVG grouped element
+          xAxisG = svg.append("g").attr("id", "xAxis").attr("class", "axis");
+          yAxisG = svg.append("g").attr("id", "yAxis").attr("class", "axis");
+
+          xAxisG.call(xAxis)
+            .attr("transform", "translate(0, "+ (height-margin) + ")" ); // Move 100 pixels on the y-axis
+
+          yAxisG.call(yAxis).attr("transform", "translate("+ margin + ", 0)" ); 
+
+          svg.append("text").attr("x", xScale(xMinMax[0])).attr("y", yScale(yMinMax[0])).text("More Wealth").attr("class", "axisLabel")
+          svg.append("text").attr("x", xScale(xMinMax[1])).attr("y", yScale(yMinMax[0])).text("Less Wealth").attr("text-anchor", "end").attr("class", "axisLabel")
+          // Animation.
+          update();
+
+
+        });
+
+
+        function update() {
+          circles.transition()
+            .delay(function(d, i) { return i*10; })
+            .attr("r", function(d) { return rScale(d.value); });
+        }
+
+
+      </script>
+
+
+  </body>
+</html>
